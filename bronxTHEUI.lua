@@ -30,15 +30,15 @@ local ConfigFlags    = Bronx.ConfigFlags
 local Notifications  = Bronx.Notifications
 local themes = {
     preset = {
-        accent       = hex("a020f0"), -- Purple
-        background   = rgb(8, 8, 12),
-        section      = rgb(18, 18, 28),
-        element      = rgb(28, 28, 42),
-        outline      = hex("a020f0"),
+        accent       = hex("ff0000"), -- Red
+        background   = rgb(0, 0, 0),
+        section      = rgb(10, 10, 10),
+        element      = rgb(20, 20, 20),
+        outline      = hex("ff0000"),
         text         = rgb(255, 255, 255),
-        subtext      = rgb(130, 150, 190),
-        tab_active   = hex("a020f0"),
-        tab_inactive = rgb(22, 22, 35),
+        subtext      = rgb(160, 160, 160),
+        tab_active   = hex("ff0000"),
+        tab_inactive = rgb(15, 15, 15),
     },
     utility = {}
 }
