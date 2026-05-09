@@ -158,12 +158,67 @@ function ProjectTX:Window(props)
         if input.UserInputType == Enum.UserInputType.MouseButton1 then Resizing = false end
     end)
 
+    local Visible = true
+    local function Toggle(bool)
+        if bool ~= nil then
+            Visible = bool
+        else
+            Visible = not Visible
+        end
+        Main.Visible = Visible
+    end
+
+    InputService.InputBegan:Connect(function(input, gpe)
+        if not gpe and input.KeyCode == Enum.KeyCode.RightShift then
+            Toggle()
+        end
+    end)
+
+    -- Mobile Support
+    if InputService.TouchEnabled then
+        local MobileToggle = self:Create("TextButton", {
+            Parent = Screen,
+            Size = UDim2.new(0, 45, 0, 45),
+            Position = UDim2.new(0, 10, 0.5, -22),
+            BackgroundColor3 = self.Themes.Header,
+            Text = "TX",
+            TextColor3 = self.Themes.Accent,
+            Font = Enum.Font.GothamBold,
+            TextSize = 14,
+            ZIndex = 100
+        })
+        self:Create("UICorner", {Parent = MobileToggle, CornerRadius = UDim.new(0, 8)})
+        self:Create("UIStroke", {Parent = MobileToggle, Color = self.Themes.Stroke, Thickness = 1})
+
+        local DraggingToggle, DragStartToggle, StartPosToggle
+        MobileToggle.InputBegan:Connect(function(input)
+            if input.UserInputType == Enum.UserInputType.Touch then
+                DraggingToggle = true
+                DragStartToggle = input.Position
+                StartPosToggle = MobileToggle.Position
+            end
+        end)
+        InputService.InputChanged:Connect(function(input)
+            if DraggingToggle and input.UserInputType == Enum.UserInputType.Touch then
+                local Delta = input.Position - DragStartToggle
+                MobileToggle.Position = UDim2.new(StartPosToggle.X.Scale, StartPosToggle.X.Offset + Delta.X, StartPosToggle.Y.Scale, StartPosToggle.Y.Offset + Delta.Y)
+            end
+        end)
+        InputService.InputEnded:Connect(function(input)
+            if input.UserInputType == Enum.UserInputType.Touch then DraggingToggle = false end
+        end)
+
+        MobileToggle.MouseButton1Click:Connect(Toggle)
+    end
+
     local Window = setmetatable({
         Main = Main,
+        Screen = Screen,
         TabHolder = TabHolder,
         Container = Container,
         Tabs = {},
-        CurrentTab = nil
+        CurrentTab = nil,
+        Toggle = Toggle
     }, ProjectTX)
 
     return Window
